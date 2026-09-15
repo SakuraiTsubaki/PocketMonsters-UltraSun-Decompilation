@@ -1,0 +1,11 @@
+{
+  "batch": "png-reference-batch-003",
+  "purpose": "Small human-viewable PNG reference batch for the first evolved Alola starters. Public reference only; not yet verified against a retail target build.",
+  "assets": [
+    {"id":"dartrix-gen7-box-icon-reference","path":"assets/reference/pokeapi/generation-vii/icons/dartrix.png","kind":"graphic/png/reference","target":{"game":"Pokemon Ultra Sun","region":"not established","revision":"not established"},"source":{"repository":"PokeAPI/sprites","path":"sprites/pokemon/versions/generation-vii/icons/723.png","blob_sha":"34b570c08066c043ba2536d22e6e4e7f8c7d5e35"},"dimensions":"40x30","verification":"Unverified"},
+    {"id":"torracat-gen7-box-icon-reference","path":"assets/reference/pokeapi/generation-vii/icons/torracat.png","kind":"graphic/png/reference","target":{"game":"Pokemon Ultra Sun","region":"not established","revision":"not established"},"source":{"repository":"PokeAPI/sprites","path":"sprites/pokemon/versions/generation-vii/icons/726.png","blob_sha":"84be17e54a641390c64b0737fac3986b253b1e19"},"dimensions":"40x30","verification":"Unverified"},
+    {"id":"brionne-gen7-box-icon-reference","path":"assets/reference/pokeapi/generation-vii/icons/brionne.png","kind":"graphic/png/reference","target":{"game":"Pokemon Ultra Sun","region":"not established","revision":"not established"},"source":{"repository":"PokeAPI/sprites","path":"sprites/pokemon/versions/generation-vii/icons/729.png","blob_sha":"6de80305bdfffcb9584030d394d097eca1531085"},"dimensions":"40x30","verification":"Unverified"}
+  ],
+  "rights_note": "Upstream LICENCE.txt states that image contents are Copyright The Pokemon Company while the repository is distributed under CC0 1.0. This project does not treat third-party Pokemon image rights as waived by the upstream repository license.",
+  "notes": "Public Generation VII icon references; no claim of byte-exact Japanese retail identity."
+}
