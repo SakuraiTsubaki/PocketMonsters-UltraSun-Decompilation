@@ -1,0 +1,28 @@
+{
+  "schema": "sakurai.decompilation.target.v1",
+  "generation": 7,
+  "game": "Pokemon Ultra Sun",
+  "family": "Alola",
+  "platform": "Nintendo 3DS",
+  "target_build": {
+    "region": null,
+    "language": null,
+    "revision": null,
+    "update": null,
+    "verification": "unverified"
+  },
+  "format_baseline": {
+    "container_family": "NCCH/CXI",
+    "primary_areas": ["ExeFS", "RomFS"],
+    "executable_candidates": ["ExeFS/.code", "ExeFS/code.bin", ".code.bin", "code.bin"],
+    "status": "platform-format baseline; confirm against local extracted target"
+  },
+  "first_pass": [
+    "inventory extracted tree",
+    "record hashes and sizes",
+    "identify executable image",
+    "map executable sections",
+    "classify RomFS resource families"
+  ],
+  "rom_binary_policy": "Do not commit ROM images, encrypted title packages, or redistributed proprietary binaries."
+}
