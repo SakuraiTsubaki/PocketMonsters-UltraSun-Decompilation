@@ -1,0 +1,10 @@
+{
+  "batch":"png-reference-batch-004",
+  "purpose":"Final-evolution Alola starter PNG reference batch. Public reference only; not yet verified against a retail target build.",
+  "assets":[
+    {"id":"decidueye-gen7-box-icon-reference","path":"assets/reference/pokeapi/generation-vii/icons/decidueye.png","source":{"repository":"PokeAPI/sprites","path":"sprites/pokemon/versions/generation-vii/icons/724.png","blob_sha":"9377b5f1a51227a405918e8c9f0f07886f12e5ab"},"dimensions":"40x30","verification":"Unverified"},
+    {"id":"incineroar-gen7-box-icon-reference","path":"assets/reference/pokeapi/generation-vii/icons/incineroar.png","source":{"repository":"PokeAPI/sprites","path":"sprites/pokemon/versions/generation-vii/icons/727.png","blob_sha":"534b2375e23cbc1f6d7dbe7a68f62e3a1c3750c3"},"dimensions":"40x30","verification":"Unverified"},
+    {"id":"primarina-gen7-box-icon-reference","path":"assets/reference/pokeapi/generation-vii/icons/primarina.png","source":{"repository":"PokeAPI/sprites","path":"sprites/pokemon/versions/generation-vii/icons/730.png","blob_sha":"0c1f3471ac46d3424b328884595f66c14021644a"},"dimensions":"40x30","verification":"Unverified"}
+  ],
+  "rights_note":"Upstream LICENCE.txt states image contents are Copyright The Pokemon Company; these are retained as provenance/reference assets only."
+}
