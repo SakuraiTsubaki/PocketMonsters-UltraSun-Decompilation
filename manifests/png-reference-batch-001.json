@@ -1,0 +1,21 @@
+{
+  "batch": "png-reference-batch-001",
+  "purpose": "First human-viewable PNG reference asset batch. Public reference only; not yet verified against a retail target build.",
+  "assets": [
+    {
+      "id": "necrozma-dusk-mane-gen7-box-icon-reference",
+      "path": "assets/reference/pokeapi/generation-vii/icons/necrozma-dusk-mane.png",
+      "kind": "graphic/png/reference",
+      "target": {"game": "Pokemon Ultra Sun", "region": "not established", "revision": "not established"},
+      "source": {
+        "repository": "PokeAPI/sprites",
+        "path": "sprites/pokemon/versions/generation-vii/icons/10155.png",
+        "blob_sha": "3de3123e7b2952e9e589f1a70bf1d03dba49cbb0"
+      },
+      "dimensions": "40x30",
+      "verification": "Unverified",
+      "rights_note": "Upstream LICENCE.txt states that image contents are Copyright The Pokemon Company while the repository is distributed under CC0 1.0. This project does not treat third-party Pokemon image rights as waived by the upstream repository license.",
+      "notes": "Generation VII Dusk Mane Necrozma icon reference. Preserve as provenance/reference until a target-build asset can be independently observed and compared."
+    }
+  ]
+}
