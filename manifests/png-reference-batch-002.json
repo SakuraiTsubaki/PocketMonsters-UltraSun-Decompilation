@@ -1,0 +1,11 @@
+{
+  "batch": "png-reference-batch-002",
+  "purpose": "Small human-viewable PNG reference batch for the Alola starter trio. Public reference only; not yet verified against a retail target build.",
+  "assets": [
+    {"id":"rowlet-gen7-box-icon-reference","path":"assets/reference/pokeapi/generation-vii/icons/rowlet.png","kind":"graphic/png/reference","target":{"game":"Pokemon Ultra Sun","region":"not established","revision":"not established"},"source":{"repository":"PokeAPI/sprites","path":"sprites/pokemon/versions/generation-vii/icons/722.png","blob_sha":"b908079d6f40ea8e0b6eef6dd50d8be6544bcdcc"},"dimensions":"40x30","verification":"Unverified"},
+    {"id":"litten-gen7-box-icon-reference","path":"assets/reference/pokeapi/generation-vii/icons/litten.png","kind":"graphic/png/reference","target":{"game":"Pokemon Ultra Sun","region":"not established","revision":"not established"},"source":{"repository":"PokeAPI/sprites","path":"sprites/pokemon/versions/generation-vii/icons/725.png","blob_sha":"163fa3dc800ff401f67756bd1b2c40d2d6be11e2"},"dimensions":"40x30","verification":"Unverified"},
+    {"id":"popplio-gen7-box-icon-reference","path":"assets/reference/pokeapi/generation-vii/icons/popplio.png","kind":"graphic/png/reference","target":{"game":"Pokemon Ultra Sun","region":"not established","revision":"not established"},"source":{"repository":"PokeAPI/sprites","path":"sprites/pokemon/versions/generation-vii/icons/728.png","blob_sha":"f4679fcc5d4278c5d91bf45547498daee34403f3"},"dimensions":"40x30","verification":"Unverified"}
+  ],
+  "rights_note": "Upstream LICENCE.txt states that image contents are Copyright The Pokemon Company while the repository is distributed under CC0 1.0. This project does not treat third-party Pokemon image rights as waived by the upstream repository license.",
+  "notes": "These are public Generation VII icon references, not claims of byte-exact identity with the Japanese retail target."
+}
