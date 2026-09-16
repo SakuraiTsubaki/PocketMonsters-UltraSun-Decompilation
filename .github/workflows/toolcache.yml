@@ -1,0 +1,51 @@
+name: Build portable Gen VII 3DS toolcache
+on:
+  workflow_dispatch:
+  push:
+    paths: [.github/workflows/toolcache.yml]
+permissions:
+  contents: write
+concurrency:
+  group: gen7-3ds-toolcache
+  cancel-in-progress: false
+env:
+  TAG: toolcache-2026-09-16
+  ASSET: gen7-3ds-toolcache-linux-x86_64.tar.gz
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build portable cache
+        shell: bash
+        run: |
+          set -euxo pipefail
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends build-essential git curl unzip cmake make pkg-config libssl-dev libcurl4-openssl-dev zlib1g-dev
+          W="$RUNNER_TEMP/gen7-toolcache"; B="$W/bundle"; S="$W/src"; D="$W/downloads"; mkdir -p "$B/bin" "$B/emulators" "$B/ghidra" "$B/jdk" "$S" "$D"
+          git clone --depth=1 --recursive https://github.com/3DSGuy/Project_CTR.git "$S/Project_CTR"; make -C "$S/Project_CTR" -j"$(nproc)"
+          install -m755 "$(find "$S/Project_CTR" -type f -name ctrtool -perm -111 | head -n1)" "$B/bin/ctrtool"
+          install -m755 "$(find "$S/Project_CTR" -type f -name makerom -perm -111 | head -n1)" "$B/bin/makerom"
+          git clone --depth=1 --recursive https://github.com/dnasdw/3dstool.git "$S/3dstool"
+          cmake -S "$S/3dstool" -B "$S/3dstool/build" -DCMAKE_BUILD_TYPE=Release -DUSE_DEP=ON; cmake --build "$S/3dstool/build" -j"$(nproc)"
+          install -m755 "$(find "$S/3dstool/bin" "$S/3dstool/build" -type f -name 3dstool -perm -111 2>/dev/null | head -n1)" "$B/bin/3dstool"
+          curl -fL --retry 3 https://github.com/NationalSecurityAgency/ghidra/releases/download/Ghidra_12.1.3_build/ghidra_12.1.3_PUBLIC_20260817.zip -o "$D/ghidra.zip"
+          echo '93a5d11a9ad510622acaaf908c556a7b9b764d338e78a7567f3689bf5081fd54  '"$D/ghidra.zip" | sha256sum -c -
+          mkdir "$W/ghidra-unpack"; unzip -q "$D/ghidra.zip" -d "$W/ghidra-unpack"; cp -a "$(find "$W/ghidra-unpack" -mindepth 1 -maxdepth 1 -type d | head -n1)/." "$B/ghidra/"
+          curl -fL --retry 3 'https://api.adoptium.net/v3/binary/latest/21/ga/linux/x64/jdk/hotspot/normal/eclipse' -o "$D/jdk.tar.gz"; tar -xzf "$D/jdk.tar.gz" -C "$B/jdk" --strip-components=1
+          curl -fL --retry 3 https://github.com/azahar-emu/azahar/releases/download/2126.1.1/azahar.AppImage -o "$B/emulators/azahar.AppImage"
+          echo 'e445dabc18fe7665867e24a18a78e24e133261a9cc320fae6a4a45bd2e7c4783  '"$B/emulators/azahar.AppImage" | sha256sum -c -; chmod +x "$B/emulators/azahar.AppImage"
+          printf '#!/usr/bin/env bash\nD="$(cd "$(dirname "$0")/.." && pwd)"; export JAVA_HOME="$D/jdk"; exec "$D/ghidra/ghidraRun" "$@"\n' > "$B/bin/ghidraRun"
+          printf '#!/usr/bin/env bash\nD="$(cd "$(dirname "$0")/.." && pwd)"; export JAVA_HOME="$D/jdk"; exec "$D/ghidra/support/analyzeHeadless" "$@"\n' > "$B/bin/analyzeHeadless"
+          printf '#!/usr/bin/env bash\nD="$(cd "$(dirname "$0")/.." && pwd)"; export APPIMAGE_EXTRACT_AND_RUN=1; exec "$D/emulators/azahar.AppImage" "$@"\n' > "$B/bin/azahar"
+          chmod +x "$B/bin/ghidraRun" "$B/bin/analyzeHeadless" "$B/bin/azahar"
+          printf '#!/usr/bin/env bash\n_D="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"; export JAVA_HOME="$_D/jdk"; export PATH="$_D/bin:$JAVA_HOME/bin:$PATH"; unset _D\n' > "$B/env.sh"; chmod +x "$B/env.sh"
+          { echo platform=nintendo-3ds; echo ghidra=12.1.3; echo azahar=2126.1.1; echo "project_ctr_commit=$(git -C "$S/Project_CTR" rev-parse HEAD)"; echo "3dstool_commit=$(git -C "$S/3dstool" rev-parse HEAD)"; "$B/jdk/bin/java" -version 2>&1 | head -n1 | sed 's/^/java=/'; sha256sum "$B/bin/ctrtool" "$B/bin/makerom" "$B/bin/3dstool" "$B/emulators/azahar.AppImage"; } > "$B/MANIFEST.txt"
+          printf '%s\n' 'Project_CTR: https://github.com/3DSGuy/Project_CTR' '3dstool: https://github.com/dnasdw/3dstool' 'Ghidra: https://github.com/NationalSecurityAgency/ghidra' 'Temurin JDK 21: https://adoptium.net/' 'Azahar: https://github.com/azahar-emu/azahar' 'No ROMs, title keys, firmware, or proprietary game payloads are included.' > "$B/UPSTREAMS.txt"
+          tar -C "$B" -czf "$GITHUB_WORKSPACE/$ASSET" .; cd "$GITHUB_WORKSPACE"; sha256sum "$ASSET" > "$ASSET.sha256"
+      - name: Publish durable toolcache release
+        env: { GH_TOKEN: "${{ github.token }}" }
+        shell: bash
+        run: |
+          set -euxo pipefail
+          if gh release view "$TAG" >/dev/null 2>&1; then gh release upload "$TAG" "$ASSET" "$ASSET.sha256" --clobber; else gh release create "$TAG" "$ASSET" "$ASSET.sha256" --title 'Generation VII portable toolcache' --notes 'Prebuilt Linux x86_64 analysis toolcache. Contains open-source tools/emulator/runtime only; no ROMs, keys, firmware, or game payloads.'; fi
