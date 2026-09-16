@@ -23,9 +23,13 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends build-essential git curl unzip cmake make pkg-config libssl-dev libcurl4-openssl-dev zlib1g-dev
           W="$RUNNER_TEMP/gen7-toolcache"; B="$W/bundle"; S="$W/src"; D="$W/downloads"; mkdir -p "$B/bin" "$B/emulators" "$B/ghidra" "$B/jdk" "$S" "$D"
-          git clone --depth=1 --recursive https://github.com/3DSGuy/Project_CTR.git "$S/Project_CTR"; make -C "$S/Project_CTR" -j"$(nproc)"
-          install -m755 "$(find "$S/Project_CTR" -type f -name ctrtool -perm -111 | head -n1)" "$B/bin/ctrtool"
-          install -m755 "$(find "$S/Project_CTR" -type f -name makerom -perm -111 | head -n1)" "$B/bin/makerom"
+          git clone --depth=1 --recursive https://github.com/3DSGuy/Project_CTR.git "$S/Project_CTR"
+          make -C "$S/Project_CTR/ctrtool" deps
+          make -C "$S/Project_CTR/ctrtool" program -j"$(nproc)"
+          make -C "$S/Project_CTR/makerom" deps
+          make -C "$S/Project_CTR/makerom" program -j"$(nproc)"
+          install -m755 "$S/Project_CTR/ctrtool/bin/ctrtool" "$B/bin/ctrtool"
+          install -m755 "$S/Project_CTR/makerom/bin/makerom" "$B/bin/makerom"
           git clone --depth=1 --recursive https://github.com/dnasdw/3dstool.git "$S/3dstool"
           cmake -S "$S/3dstool" -B "$S/3dstool/build" -DCMAKE_BUILD_TYPE=Release -DUSE_DEP=ON; cmake --build "$S/3dstool/build" -j"$(nproc)"
           install -m755 "$(find "$S/3dstool/bin" "$S/3dstool/build" -type f -name 3dstool -perm -111 2>/dev/null | head -n1)" "$B/bin/3dstool"
